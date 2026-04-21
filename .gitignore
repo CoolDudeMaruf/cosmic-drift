@@ -1,0 +1,33 @@
+# ── OS Generated ──
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ── Editor / IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ── Node (if used for local dev server) ──
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Build artifacts ──
+dist/
+build/
+*.min.js
+*.min.css
+*.map
+
+# ── Environment ──
+.env
+.env.local
+.env.*.local

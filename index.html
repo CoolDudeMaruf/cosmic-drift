@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cosmic Drift — A neon-themed space arcade mini game. Navigate the void, destroy enemies, collect power-ups, and chase high scores.">
+  <meta name="keywords" content="space game, arcade, neon, browser game, cosmic drift, canvas game">
+  <meta name="author" content="CoolDudeMaruf">
+  <meta name="theme-color" content="#0a0a1a">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Cosmic Drift | Neon Space Arcade">
+  <meta property="og:description" content="A neon-themed space arcade mini game built with vanilla HTML5 Canvas.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/og-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cosmic Drift | Neon Space Arcade">
+  <meta name="twitter:description" content="Navigate the void, destroy enemies, collect power-ups, and chase high scores.">
+
+  <title>Cosmic Drift | Neon Space Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Background starfield -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Game canvas -->
+  <canvas id="game-canvas" role="img" aria-label="Cosmic Drift game area"></canvas>
+
+  <!-- Touch zone (mobile) -->
+  <div id="touch-zone" aria-hidden="true"></div>
+
+  <!-- HUD -->
+  <div id="hud" role="status" aria-live="polite">
+    <div class="hud-block">
+      <span class="hud-label">Score</span>
+      <span class="hud-value" id="hud-score">0</span>
+    </div>
+    <div class="hud-block">
+      <span class="hud-label">Lives</span>
+      <div class="hud-lives" id="hud-lives"></div>
+    </div>
+  </div>
+
+  <!-- Start Screen -->
+  <div class="screen-overlay" id="start-screen" role="dialog" aria-labelledby="start-title">
+    <h1 class="game-title" id="start-title">Cosmic Drift</h1>
+    <p class="game-subtitle">Navigate the Void</p>
+    <button class="btn-play" id="btn-start">Launch</button>
+    <p class="controls-hint"><span>← →</span> or <span>A D</span> to move &nbsp;·&nbsp; <span>Space</span> to shoot</p>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div class="screen-overlay hidden" id="gameover-screen" role="dialog" aria-labelledby="gameover-title">
+    <h1 class="game-title" id="gameover-title" style="font-size: clamp(28px,5vw,48px); margin-bottom: 24px;">Game Over</h1>
+    <p class="final-score-label">Final Score</p>
+    <p class="final-score-value" id="final-score">0</p>
+    <p class="high-score-text" id="high-score-text"></p>
+    <button class="btn-play" id="btn-restart">Play Again</button>
+    <p class="controls-hint" style="margin-top: 20px;">Press <span>Enter</span> to restart</p>
+  </div>
+
+  <!-- Game Engine -->
+  <script src="js/game.js"></script>
+</body>
+</html>
