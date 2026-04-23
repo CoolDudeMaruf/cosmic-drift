@@ -238,18 +238,21 @@
 
   function showPlayerInfo(){
     const bar=document.getElementById('player-info-bar');
+    const logoutBtn=document.getElementById('btn-logout');
     const session=CosmicAuth.getCurrentSession();
     if(!session){bar.innerHTML='';return;}
     if(session.isGuest){
       bar.innerHTML=`<div class="player-card"><span class="player-avatar">🚀</span><span class="player-name">Guest Pilot</span><span class="player-tag">No score tracking</span></div>`;
-      document.getElementById('btn-logout').style.display='none';
+      logoutBtn.textContent='← Switch User';
+      logoutBtn.style.display='';
     } else {
       const user=CosmicAuth.getUser(session.username);
       const rank=CosmicLeaderboard.getCurrentRank();
       if(user){
         bar.innerHTML=`<div class="player-card"><span class="player-avatar">${user.country?.flag||'🌍'}</span><span class="player-name">${user.username}</span><span class="player-tag">High: ${user.highScore.toLocaleString()}${rank?' · Rank #'+rank:''}</span></div>`;
       }
-      document.getElementById('btn-logout').style.display='';
+      logoutBtn.textContent='Sign Out';
+      logoutBtn.style.display='';
     }
   }
 
@@ -307,16 +310,22 @@
   });
 
   // Leaderboard
-  function openLeaderboard(){
+  let leaderboardReturnTo='start-screen';
+  function openLeaderboard(returnTo){
+    leaderboardReturnTo=returnTo||'start-screen';
     showScreen('leaderboard-screen');
     gameState='leaderboard';
     document.getElementById('lb-tab-global').classList.add('active');
     document.getElementById('lb-tab-personal').classList.remove('active');
     CosmicLeaderboard.renderGlobalBoard(document.getElementById('lb-table-wrap'));
   }
-  document.getElementById('btn-leaderboard').addEventListener('click',openLeaderboard);
-  document.getElementById('btn-leaderboard-go').addEventListener('click',openLeaderboard);
-  document.getElementById('btn-lb-close').addEventListener('click',()=>{showScreen('start-screen');gameState='start';showPlayerInfo();});
+  document.getElementById('btn-leaderboard').addEventListener('click',()=>openLeaderboard('start-screen'));
+  document.getElementById('btn-leaderboard-go').addEventListener('click',()=>openLeaderboard('gameover-screen'));
+  document.getElementById('btn-lb-close').addEventListener('click',()=>{
+    showScreen(leaderboardReturnTo);
+    gameState=leaderboardReturnTo==='gameover-screen'?'over':'start';
+    if(gameState==='start') showPlayerInfo();
+  });
 
   document.querySelectorAll('.lb-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
