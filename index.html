@@ -49,31 +49,173 @@
       <span class="hud-label">Score</span>
       <span class="hud-value" id="hud-score">0</span>
     </div>
+    <div class="hud-block hud-center">
+      <span class="hud-player-name" id="hud-player-name"></span>
+    </div>
     <div class="hud-block">
       <span class="hud-label">Lives</span>
       <div class="hud-lives" id="hud-lives"></div>
     </div>
   </div>
 
-  <!-- Start Screen -->
-  <div class="screen-overlay" id="start-screen" role="dialog" aria-labelledby="start-title">
-    <h1 class="game-title" id="start-title">Cosmic Drift</h1>
+  <!-- ═══════════════════════════════════
+       WELCOME SCREEN (Auth Entry)
+       ═══════════════════════════════════ -->
+  <div class="screen-overlay" id="welcome-screen" role="dialog" aria-labelledby="welcome-title">
+    <h1 class="game-title" id="welcome-title">Cosmic Drift</h1>
     <p class="game-subtitle">Navigate the Void</p>
-    <button class="btn-play" id="btn-start">Launch</button>
+
+    <div class="auth-buttons">
+      <button class="btn-auth btn-guest" id="btn-guest">
+        <span class="btn-auth-icon">🚀</span>
+        <span class="btn-auth-text">
+          <strong>Play as Guest</strong>
+          <small>Jump right in — no account needed</small>
+        </span>
+      </button>
+
+      <button class="btn-auth btn-create" id="btn-create-account">
+        <span class="btn-auth-icon">⭐</span>
+        <span class="btn-auth-text">
+          <strong>Create Account</strong>
+          <small>Track scores & climb the leaderboard</small>
+        </span>
+      </button>
+
+      <button class="btn-auth btn-signin" id="btn-signin">
+        <span class="btn-auth-icon">🔑</span>
+        <span class="btn-auth-text">
+          <strong>Sign In</strong>
+          <small>Welcome back, pilot</small>
+        </span>
+      </button>
+    </div>
+
     <p class="controls-hint"><span>← →</span> or <span>A D</span> to move &nbsp;·&nbsp; <span>Space</span> to shoot</p>
   </div>
 
-  <!-- Game Over Screen -->
+  <!-- ═══════════════════════════════════
+       CREATE ACCOUNT SCREEN
+       ═══════════════════════════════════ -->
+  <div class="screen-overlay hidden" id="create-screen" role="dialog" aria-labelledby="create-title">
+    <h2 class="screen-heading" id="create-title">Create Your Pilot ID</h2>
+    <p class="screen-sub">Choose a callsign and your homeland</p>
+
+    <form class="auth-form" id="create-form" autocomplete="off">
+      <div class="input-group">
+        <label for="create-username" class="input-label">Callsign</label>
+        <input type="text" id="create-username" class="neon-input" placeholder="e.g. StarPilot42" maxlength="16" required>
+      </div>
+
+      <div class="input-group">
+        <label for="create-password" class="input-label">Access Code</label>
+        <input type="password" id="create-password" class="neon-input" placeholder="Min 4 characters" minlength="4" maxlength="32" required>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Select Your Country</label>
+        <div class="country-picker" id="country-picker">
+          <!-- Populated by JS -->
+        </div>
+        <input type="hidden" id="create-country" required>
+      </div>
+
+      <p class="form-error hidden" id="create-error"></p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-play" id="btn-create-submit">Register</button>
+        <button type="button" class="btn-link" id="btn-back-create">← Back</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SIGN IN SCREEN
+       ═══════════════════════════════════ -->
+  <div class="screen-overlay hidden" id="signin-screen" role="dialog" aria-labelledby="signin-title">
+    <h2 class="screen-heading" id="signin-title">Welcome Back, Pilot</h2>
+    <p class="screen-sub">Enter your credentials</p>
+
+    <form class="auth-form" id="signin-form" autocomplete="off">
+      <div class="input-group">
+        <label for="signin-username" class="input-label">Callsign</label>
+        <input type="text" id="signin-username" class="neon-input" placeholder="Your callsign" maxlength="16" required>
+      </div>
+
+      <div class="input-group">
+        <label for="signin-password" class="input-label">Access Code</label>
+        <input type="password" id="signin-password" class="neon-input" placeholder="Your access code" maxlength="32" required>
+      </div>
+
+      <p class="form-error hidden" id="signin-error"></p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-play" id="btn-signin-submit">Launch</button>
+        <button type="button" class="btn-link" id="btn-back-signin">← Back</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       START SCREEN (pre-game)
+       ═══════════════════════════════════ -->
+  <div class="screen-overlay hidden" id="start-screen" role="dialog" aria-labelledby="start-title">
+    <h1 class="game-title" id="start-title">Cosmic Drift</h1>
+    <p class="game-subtitle">Navigate the Void</p>
+
+    <div class="player-info-bar" id="player-info-bar">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="start-buttons">
+      <button class="btn-play" id="btn-start">Launch</button>
+      <button class="btn-secondary" id="btn-leaderboard">🏆 Leaderboard</button>
+      <button class="btn-secondary btn-logout" id="btn-logout">Sign Out</button>
+    </div>
+
+    <p class="controls-hint"><span>← →</span> or <span>A D</span> to move &nbsp;·&nbsp; <span>Space</span> to shoot</p>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       GAME OVER SCREEN
+       ═══════════════════════════════════ -->
   <div class="screen-overlay hidden" id="gameover-screen" role="dialog" aria-labelledby="gameover-title">
     <h1 class="game-title" id="gameover-title" style="font-size: clamp(28px,5vw,48px); margin-bottom: 24px;">Game Over</h1>
     <p class="final-score-label">Final Score</p>
     <p class="final-score-value" id="final-score">0</p>
     <p class="high-score-text" id="high-score-text"></p>
-    <button class="btn-play" id="btn-restart">Play Again</button>
+
+    <div class="gameover-buttons">
+      <button class="btn-play" id="btn-restart">Play Again</button>
+      <button class="btn-secondary" id="btn-leaderboard-go">🏆 Leaderboard</button>
+    </div>
+
     <p class="controls-hint" style="margin-top: 20px;">Press <span>Enter</span> to restart</p>
   </div>
 
+  <!-- ═══════════════════════════════════
+       LEADERBOARD OVERLAY
+       ═══════════════════════════════════ -->
+  <div class="screen-overlay hidden" id="leaderboard-screen" role="dialog" aria-labelledby="lb-title">
+    <div class="leaderboard-container">
+      <h2 class="screen-heading" id="lb-title">🏆 Global Leaderboard</h2>
+
+      <div class="lb-tabs">
+        <button class="lb-tab active" data-tab="global" id="lb-tab-global">Global</button>
+        <button class="lb-tab" data-tab="personal" id="lb-tab-personal">My Scores</button>
+      </div>
+
+      <div class="lb-table-wrap" id="lb-table-wrap">
+        <!-- Populated by JS -->
+      </div>
+
+      <button class="btn-link lb-close" id="btn-lb-close">← Back</button>
+    </div>
+  </div>
+
   <!-- Game Engine -->
+  <script src="js/auth.js"></script>
+  <script src="js/leaderboard.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>

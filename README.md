@@ -42,7 +42,10 @@ A neon-themed space arcade mini game built with vanilla **HTML5 Canvas**, **CSS3
 | 🔥 **Combo Multiplier** | Chain kills for escalating score multipliers with on-screen popups |
 | 💥 **Particle Effects** | Explosions, thrust trails, and impact flashes |
 | 📱 **Mobile Support** | Touch controls with auto-fire for mobile/tablet play |
-| 🏆 **Persistent Scores** | High scores saved via `localStorage` |
+| 🏆 **Global Leaderboard** | Compete against players worldwide with ranked high scores |
+| 👤 **Account System** | Create an account or play as guest — track personal stats |
+| 🌍 **Country Flags** | Select your country and represent it on the leaderboard |
+| 📊 **Personal Stats** | Games played, average score, best combo, and score history |
 | 🎨 **Glassmorphism UI** | Frosted-glass HUD with gradient neon typography |
 | 📈 **Dynamic Difficulty** | Enemy speed and spawn rates increase per level |
 
@@ -106,12 +109,14 @@ npx serve .
 cosmic-drift/
 ├── index.html              # Main entry point
 ├── css/
-│   └── style.css           # All styling (glassmorphism, HUD, screens)
+│   └── style.css           # All styling (glassmorphism, HUD, auth, leaderboard)
 ├── js/
+│   ├── auth.js             # Authentication & user management module
+│   ├── leaderboard.js      # Global leaderboard & personal stats module
 │   └── game.js             # Game engine (canvas, physics, input, loop)
 ├── assets/
 │   ├── favicon.svg         # Browser tab icon
-│   ├── og-preview.png      # Social media preview (placeholder)
+│   ├── og-preview.png      # Social media preview
 │   ├── screenshot-start.png
 │   └── screenshot-gameplay.png
 ├── README.md               # This file
@@ -126,30 +131,28 @@ cosmic-drift/
 
 ## 🧠 Architecture
 
-The game engine is a single-file IIFE (`js/game.js`) that manages:
+The game is built with three modular IIFEs:
 
 ```
-┌────────────────────────────────────────────┐
-│               Main Loop (rAF)              │
-├────────────┬───────────────────────────────┤
-│  Background│        Game Layer             │
-│  Starfield │  ┌─────────┐ ┌─────────────┐ │
-│            │  │  Input   │ │  Collision   │ │
-│  (bgCtx)   │  │ Handler  │ │  Detection   │ │
-│            │  └────┬─────┘ └──────┬──────┘ │
-│            │       │              │        │
-│            │  ┌────▼─────┐ ┌──────▼──────┐ │
-│            │  │  Player  │ │  Enemies    │ │
-│            │  │  Ship    │ │  & PowerUps │ │
-│            │  └────┬─────┘ └──────┬──────┘ │
-│            │       │              │        │
-│            │  ┌────▼──────────────▼──────┐ │
-│            │  │   Particle System        │ │
-│            │  │   (explosions, thrust)   │ │
-│            │  └──────────────────────────┘ │
-├────────────┴───────────────────────────────┤
-│        HUD (DOM, glassmorphism CSS)        │
-└────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│              CosmicAuth (auth.js)                 │
+│  Account creation · Sign in · Guest sessions     │
+│  Country flags · localStorage persistence        │
+├──────────────────────────────────────────────────┤
+│           CosmicLeaderboard (leaderboard.js)      │
+│  Global rankings · Personal stats · Seed data    │
+│  Score history · Rank calculation                │
+├──────────────────────────────────────────────────┤
+│              Game Engine (game.js)                │
+│  ┌────────────┬─────────────────────────────┐    │
+│  │ Background │        Game Layer            │    │
+│  │ Starfield  │  Input → Physics → Collision │    │
+│  │ (bgCtx)    │  Player · Enemies · PowerUps │    │
+│  │            │  Bullets · Particles         │    │
+│  ├────────────┴─────────────────────────────┤    │
+│  │   HUD · Auth UI Wiring · Screen Manager  │    │
+│  └──────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────┘
 ```
 
 ---
